@@ -1,6 +1,7 @@
 <resources>
   <string name="app_name">LightRemote</string>
   <string name="title_activity_remote">RemoteActivity</string>
-  <string name="title_wifi">Wifi</string>
-  <string name="title_infrared">Infrared</string>
+  <string name="title_wifi">Wifi Remote</string>
+  <string name="title_infrared">Infrared Remote</string>
+  <string name="author">Tien Dat Huynh</string>
 </resources>

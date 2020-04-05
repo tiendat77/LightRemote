@@ -1,13 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/wifi_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:paddingBottom="?attr/actionBarSize"
   tools:context=".ui.wifi.wifi">
 
-  <TextView
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Hello" />
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <!--Row 1-->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/wifi_button_func1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTintMode="src_over"
+        android:scaleType="center"
+        app:backgroundTint="@color/infrared_button_background"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabCustomSize="@dimen/circle_button"
+        app:maxImageSize="56dp" />
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/wifi_button_func2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/circle_button_gap"
+        android:backgroundTintMode="src_over"
+        android:scaleType="center"
+        app:backgroundTint="@color/infrared_button_background"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabCustomSize="@dimen/circle_button"
+        app:maxImageSize="56dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="@dimen/circle_button"
+        android:layout_height="wrap_content"
+        android:text="Light 1"
+        android:textAlignment="center" />
+
+      <TextView
+        android:layout_width="@dimen/circle_button"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/circle_button_gap"
+        android:text="Light 2"
+        android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <!--Row 2-->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/circle_button_gap"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/wifi_button_func3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTintMode="src_over"
+        android:scaleType="center"
+        app:backgroundTint="@color/infrared_button_background"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabCustomSize="@dimen/circle_button"
+        app:maxImageSize="56dp" />
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/wifi_button_func4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/circle_button_gap"
+        android:backgroundTintMode="src_over"
+        android:scaleType="center"
+        android:tooltipText="@string/author"
+        app:backgroundTint="@color/infrared_button_background"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabCustomSize="@dimen/circle_button"
+        app:maxImageSize="56dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="@dimen/circle_button"
+        android:layout_height="wrap_content"
+        android:text="Light 3"
+        android:textAlignment="center" />
+
+      <TextView
+        android:layout_width="@dimen/circle_button"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/circle_button_gap"
+        android:text="Light 4"
+        android:textAlignment="center" />
+
+    </LinearLayout>
+
+  </LinearLayout>
 
 </FrameLayout>
