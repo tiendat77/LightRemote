@@ -1,0 +1,22 @@
+{
+  "name": "light-remote-server",
+  "version": "1.0.0",
+  "description": "LightRemote server test",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Tien Dat Huynh",
+  "license": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}

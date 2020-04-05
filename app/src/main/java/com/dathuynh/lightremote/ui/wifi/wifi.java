@@ -2,7 +2,6 @@ package com.dathuynh.lightremote.ui.wifi;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dathuynh.lightremote.R;
+import com.dathuynh.lightremote.utils.api.API;
+import com.dathuynh.lightremote.utils.api.APIService;
+import com.dathuynh.lightremote.utils.api.ResponseModel;
+import com.dathuynh.lightremote.utils.api.LightModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class wifi extends Fragment implements View.OnClickListener {
 
@@ -25,13 +32,9 @@ public class wifi extends Fragment implements View.OnClickListener {
   private WifiViewModel mViewModel;
   private FloatingActionButton lightButton1;
   private FloatingActionButton lightButton2;
-  private FloatingActionButton lightButton3;
-  private FloatingActionButton lightButton4;
 
   private Boolean light1;
   private Boolean light2;
-
-  private SocketClient socketClient;
 
   public static wifi newInstance() {
     return new wifi();
@@ -54,17 +57,19 @@ public class wifi extends Fragment implements View.OnClickListener {
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     mViewModel = ViewModelProviders.of(this).get(WifiViewModel.class);
+
+    getLightStatus();
   }
 
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.wifi_button_func1:
-        onCLickLight1();
+        onLight1Click();
         break;
 
       case R.id.wifi_button_func2:
-        onCLickLight2();
+        onLight2Click();
         break;
 
       default:
@@ -77,20 +82,14 @@ public class wifi extends Fragment implements View.OnClickListener {
   private void initView(View view) {
     lightButton1 = view.findViewById(R.id.wifi_button_func1);
     lightButton2 = view.findViewById(R.id.wifi_button_func2);
-    lightButton3 = view.findViewById(R.id.wifi_button_func3);
-    lightButton4 = view.findViewById(R.id.wifi_button_func4);
 
     lightButton1.setImageResource(R.drawable.ic_led_off);
     lightButton2.setImageResource(R.drawable.ic_light_bulb_off);
-    lightButton3.setImageResource(R.drawable.ic_led_off);
-    lightButton4.setImageResource(R.drawable.ic_light_bulb_off);
   }
 
   private void initListener() {
     lightButton1.setOnClickListener(this);
     lightButton2.setOnClickListener(this);
-    lightButton3.setOnClickListener(this);
-    lightButton4.setOnClickListener(this);
   }
 
   private void initVariable() {
@@ -99,7 +98,7 @@ public class wifi extends Fragment implements View.OnClickListener {
   }
 
   // HANDLER
-  private void onCLickLight1() {
+  private void onLight1Click() {
     light1 = !light1;
 
     if (light1) {
@@ -109,7 +108,7 @@ public class wifi extends Fragment implements View.OnClickListener {
     }
   }
 
-  private void onCLickLight2() {
+  private void onLight2Click() {
     light2 = !light2;
 
     if (light2) {
@@ -119,30 +118,60 @@ public class wifi extends Fragment implements View.OnClickListener {
     }
   }
 
-  private void onReceiveMessage(String message) {
-    Log.d(TAG, message);
+  private void updateLightStatus(int light, boolean status) {
+    switch (light) {
+      case 1:
+        light1 = status;
+        if (light1) {
+          lightButton1.setImageResource(R.drawable.ic_led_on);
+        } else {
+          lightButton1.setImageResource(R.drawable.ic_led_off);
+        }
+        break;
+
+      case 2:
+        light2 = status;
+        if (light2) {
+          lightButton2.setImageResource(R.drawable.ic_light_bulb_on);
+        } else {
+          lightButton2.setImageResource(R.drawable.ic_light_bulb_off);
+        }
+        break;
+
+      default:
+        break;
+    }
   }
 
   // UTILS
-  public class RemoteControlTask extends AsyncTask<String, String, String> {
-    @Override
-    protected String doInBackground(String... message) {
-      createSocket();
-      return null;
-    }
-  }
+  private void getLightStatus() {
+    API api = APIService.createAPIService();
+    Call<ResponseModel> callback = api.getLightStatus();
 
-  private void createSocket() {
-    socketClient = new SocketClient(new SocketClient.OnReceiveMessage() {
+    callback.enqueue(new Callback<ResponseModel>() {
+
       @Override
-      public void receivedMessage(String message) {
-        onReceiveMessage(message);
+      public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+        if (response != null) {
+          ResponseModel data = response.body();
+
+          LightModel light1 = data.getLight1();
+          LightModel light2 = data.getLight2();
+
+          updateLightStatus(1, light1.getStatus());
+          updateLightStatus(2, light2.getStatus());
+        }
+      }
+
+      @Override
+      public void onFailure(Call<ResponseModel> call, Throwable t) {
+        Log.d(TAG, t.getMessage());
+        pushNotify("Please check internet connection!");
       }
     });
+  }
 
-    if (socketClient != null) {
-      socketClient.start();
-    }
+  private void setLightStatus() {
   }
 
   private void pushNotify(String message) {

@@ -1,4 +1,4 @@
-package com.dathuynh.lightremote.ui.wifi;
+package com.dathuynh.lightremote.utils.wifi;
 
 import android.util.Log;
 

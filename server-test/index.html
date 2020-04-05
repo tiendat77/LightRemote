@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Light Remote</title>
+  <style>
+    .container {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+    }
+
+    .action {
+      min-width: 200px;
+      min-height: 50px;
+      box-shadow: 2px 2px rgba(123, 124, 180, 0.6);
+    }
+
+    .mt-20 {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main">
+      <button type="button" class="action">Light 1</button>
+      <button type="button" class="action mt-20">Light 2</button>
+    </div>
+  </div>
+</body>
+</html>

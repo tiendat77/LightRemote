@@ -1,4 +1,4 @@
-package com.dathuynh.lightremote.ui.wifi;
+package com.dathuynh.lightremote.utils.wifi;
 
 public class Constants {
   public static final String SERVER_IP = "192.168.4.1";
