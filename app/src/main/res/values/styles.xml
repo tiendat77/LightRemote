@@ -8,4 +8,19 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+  <style name="Theme.MaterialTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <item name="colorPrimary">#03DAC6</item>
+    <item name="colorPrimaryDark">#02A293</item>
+  </style>
+
+  <style name="Theme.MaterialTheme.ActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <item name="colorPrimary">#03DAC6</item>
+    <item name="colorPrimaryDark">#02A293</item>
+  </style>
+
+  <style name="IconOnlyButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="iconPadding">0dp</item>
+    <item name="iconGravity">textStart</item>
+  </style>
+
 </resources>

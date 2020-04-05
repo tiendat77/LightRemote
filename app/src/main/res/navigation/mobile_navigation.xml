@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/mobile_navigation"
+  app:startDestination="@+id/navigation_wifi">
+
+  <fragment
+    android:id="@+id/navigation_wifi"
+    android:name="com.dathuynh.lightremote.ui.wifi.wifi"
+    android:label="@string/title_wifi"
+    tools:layout="@layout/wifi_fragment" />
+
+  <fragment
+    android:id="@+id/navigation_infrared"
+    android:name="com.dathuynh.lightremote.ui.infrared.infrared"
+    android:label="@string/title_infrared"
+    tools:layout="@layout/infrared_fragment" />
+</navigation>
