@@ -31,6 +31,7 @@ public class wifi extends Fragment implements View.OnClickListener {
   private WifiViewModel mViewModel;
   private FloatingActionButton lightButton1;
   private FloatingActionButton lightButton2;
+  private FloatingActionButton connectButton;
 
   private Boolean light1;
   private Boolean light2;
@@ -71,6 +72,10 @@ public class wifi extends Fragment implements View.OnClickListener {
         onLight2Click();
         break;
 
+      case R.id.wifi_button_connect:
+        getLightStatus();
+        break;
+
       default:
         pushNotify("Command not found!");
         break;
@@ -81,14 +86,17 @@ public class wifi extends Fragment implements View.OnClickListener {
   private void initView(View view) {
     lightButton1 = view.findViewById(R.id.wifi_button_func1);
     lightButton2 = view.findViewById(R.id.wifi_button_func2);
+    connectButton = view.findViewById(R.id.wifi_button_connect);
 
     lightButton1.setImageResource(R.drawable.ic_led_off);
     lightButton2.setImageResource(R.drawable.ic_light_bulb_off);
+    connectButton.setImageResource(R.drawable.ic_refresh);
   }
 
   private void initListener() {
     lightButton1.setOnClickListener(this);
     lightButton2.setOnClickListener(this);
+    connectButton.setOnClickListener(this);
   }
 
   private void initVariable() {

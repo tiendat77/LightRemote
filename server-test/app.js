@@ -6,6 +6,9 @@ const path = require('path');
 
 const app = express();
 
+var light1 = true;
+var light2 = false;
+
 app
    .use(express.static('index.html'))
    .use(cors())
@@ -17,12 +20,14 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/api/status', (req, res) => {
+app.get('/api/list', (req, res) => {
   console.log('get status');
-  res.json({
-    light1: true,
-    light2: false
-  });
+  res.json({ light1, light2 });
+});
+
+app.get('/api/update', (req, res) => {
+  console.log('update status');
+  res.json({ light1, light2 });
 });
 
 ///////////////////////////////////////////////////
