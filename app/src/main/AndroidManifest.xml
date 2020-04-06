@@ -18,19 +18,17 @@
     android:theme="@style/Theme.MaterialTheme">
     <activity
       android:name=".RemoteActivity"
-      android:label="@string/title_activity_remote"
-      android:parentActivityName=".MainActivity"
-      android:theme="@style/Theme.MaterialTheme">
-    </activity>
-
-    <activity
-      android:name=".MainActivity"
       android:theme="@style/Theme.MaterialTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+    </activity>
+
+    <activity
+      android:name=".MainActivity"
+      android:theme="@style/Theme.MaterialTheme">
     </activity>
   </application>
 

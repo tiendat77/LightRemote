@@ -18,7 +18,6 @@ import com.dathuynh.lightremote.R;
 import com.dathuynh.lightremote.utils.api.API;
 import com.dathuynh.lightremote.utils.api.APIService;
 import com.dathuynh.lightremote.utils.api.ResponseModel;
-import com.dathuynh.lightremote.utils.api.LightModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -155,11 +154,11 @@ public class wifi extends Fragment implements View.OnClickListener {
         if (response != null) {
           ResponseModel data = response.body();
 
-          LightModel light1 = data.getLight1();
-          LightModel light2 = data.getLight2();
+          boolean light1 = data.getLight1();
+          boolean light2 = data.getLight2();
 
-          updateLightStatus(1, light1.getStatus());
-          updateLightStatus(2, light2.getStatus());
+          updateLightStatus(1, light1);
+          updateLightStatus(2, light2);
         }
       }
 

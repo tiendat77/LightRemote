@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/status', (req, res) => {
+  console.log('get status');
   res.json({
     light1: true,
     light2: false
