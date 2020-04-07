@@ -4,5 +4,5 @@
   <color name="colorPrimaryDark">#02A293</color>
   <color name="colorAccent">#D3DA03</color>
 
-  <color name="infrared_button_background">#CCD3D3D3</color>
+  <color name="circle_button_background">#33DEFDBA</color>
 </resources>

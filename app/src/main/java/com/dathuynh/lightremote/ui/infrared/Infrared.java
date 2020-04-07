@@ -19,7 +19,7 @@ import com.dathuynh.lightremote.utils.infrared.ConsumerIrManager;
 import com.dathuynh.lightremote.utils.infrared.IrCommand;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class infrared extends Fragment implements View.OnClickListener {
+public class Infrared extends Fragment implements View.OnClickListener {
 
   // DECLARE VARIABLES
   private InfraredViewModel mViewModel;
@@ -33,8 +33,8 @@ public class infrared extends Fragment implements View.OnClickListener {
   private FloatingActionButton volumeUpButton;
   private FloatingActionButton volumeDownButton;
 
-  public static infrared newInstance() {
-    return new infrared();
+  public static Infrared newInstance() {
+    return new Infrared();
   }
 
   @Override

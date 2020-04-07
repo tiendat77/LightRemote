@@ -21,12 +21,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/list', (req, res) => {
-  console.log('get status');
+  console.log('get');
   res.json({ light1, light2 });
 });
 
-app.get('/api/update', (req, res) => {
-  console.log('update status');
+app.get('/api/update/light1', (req, res) => {
+  console.log('update');
+  const status = req.query.status;
+  if (status !== undefined) {
+    light1 = status;
+  }
+  res.json({ light1, light2 });
+});
+
+app.get('/api/update/light2', (req, res) => {
+  console.log('update');
+  const status = req.query.status;
+  if (status !== undefined) {
+    light2 = status;
+  }
   res.json({ light1, light2 });
 });
 

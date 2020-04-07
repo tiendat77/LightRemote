@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class wifi extends Fragment implements View.OnClickListener {
+public class Wifi extends Fragment implements View.OnClickListener {
 
   // DECLARE VARIABLES
   private static String TAG = "Wifi Remote";
@@ -36,8 +36,8 @@ public class wifi extends Fragment implements View.OnClickListener {
   private Boolean light1;
   private Boolean light2;
 
-  public static wifi newInstance() {
-    return new wifi();
+  public static Wifi newInstance() {
+    return new Wifi();
   }
 
   @Override
@@ -107,6 +107,7 @@ public class wifi extends Fragment implements View.OnClickListener {
   // HANDLER
   private void onLight1Click() {
     light1 = !light1;
+    setLightStatus(1, light1);
 
     if (light1) {
       lightButton1.setImageResource(R.drawable.ic_led_on);
@@ -117,6 +118,7 @@ public class wifi extends Fragment implements View.OnClickListener {
 
   private void onLight2Click() {
     light2 = !light2;
+    setLightStatus(2, light2);
 
     if (light2) {
       lightButton2.setImageResource(R.drawable.ic_light_bulb_on);
@@ -156,7 +158,6 @@ public class wifi extends Fragment implements View.OnClickListener {
     Call<ResponseModel> callback = api.getLightStatus();
 
     callback.enqueue(new Callback<ResponseModel>() {
-
       @Override
       public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
         if (response != null) {
@@ -178,7 +179,41 @@ public class wifi extends Fragment implements View.OnClickListener {
     });
   }
 
-  private void setLightStatus() {
+  private void setLightStatus(int light, boolean status) {
+    API api = APIService.createAPIService();
+    Call<ResponseModel> callback;
+
+    switch (light) {
+      case 1:
+        callback = api.updateLight1Status(status);
+        break;
+      case 2:
+        callback = api.updateLight2Status(status);
+        break;
+      default:
+        callback = null;
+        break;
+    }
+
+    callback.enqueue(new Callback<ResponseModel>() {
+      @Override
+      public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+        if (response != null) {
+          ResponseModel data = response.body();
+
+          boolean light1 = data.getLight1();
+          boolean light2 = data.getLight2();
+
+          updateLightStatus(1, light1);
+          updateLightStatus(2, light2);
+        }
+      }
+
+      @Override
+      public void onFailure(Call<ResponseModel> call, Throwable t) {
+        Log.d(TAG, t.getMessage());
+      }
+    });
   }
 
   private void pushNotify(String message) {

@@ -6,7 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:paddingBottom="?attr/actionBarSize"
-  tools:context=".ui.wifi.wifi">
+  tools:context=".ui.wifi.Wifi">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:backgroundTintMode="src_over"
         android:scaleType="center"
-        app:backgroundTint="@color/infrared_button_background"
+        app:backgroundTint="@color/circle_button_background"
         app:borderWidth="0dp"
         app:elevation="0dp"
         app:fabCustomSize="@dimen/circle_button"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:backgroundTintMode="src_over"
         android:scaleType="center"
-        app:backgroundTint="@color/infrared_button_background"
+        app:backgroundTint="@color/circle_button_background"
         app:borderWidth="0dp"
         app:elevation="0dp"
         app:fabCustomSize="@dimen/circle_button"
@@ -86,7 +86,7 @@
       android:layout_height="wrap_content"
       android:backgroundTintMode="src_over"
       android:scaleType="center"
-      app:backgroundTint="#A5EB78"
+      app:backgroundTint="@color/colorPrimary"
       app:borderWidth="0dp"
       app:elevation="0dp"/>
 
