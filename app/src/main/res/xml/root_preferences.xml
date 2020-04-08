@@ -1,34 +1,19 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <PreferenceCategory app:title="@string/messages_header">
+  <PreferenceCategory app:title="@string/preference_title_ip">
 
     <EditTextPreference
-      app:key="signature"
-      app:title="@string/signature_title"
-      app:useSimpleSummaryProvider="true" />
-
-    <ListPreference
-      app:defaultValue="reply"
-      app:entries="@array/reply_entries"
-      app:entryValues="@array/reply_values"
-      app:key="reply"
-      app:title="@string/reply_title"
+      app:key="server_ip"
+      app:title="@string/preference_title_ip"
       app:useSimpleSummaryProvider="true" />
 
   </PreferenceCategory>
 
-  <PreferenceCategory app:title="@string/sync_header">
+  <PreferenceCategory app:title="@string/preference_title_theme">
 
     <SwitchPreferenceCompat
-      app:key="sync"
-      app:title="@string/sync_title" />
-
-    <SwitchPreferenceCompat
-      app:dependency="sync"
-      app:key="attachment"
-      app:summaryOff="@string/attachment_summary_off"
-      app:summaryOn="@string/attachment_summary_on"
-      app:title="@string/attachment_title" />
+      app:key="theme"
+      app:title="@string/preference_name_dark_theme" />
 
   </PreferenceCategory>
 

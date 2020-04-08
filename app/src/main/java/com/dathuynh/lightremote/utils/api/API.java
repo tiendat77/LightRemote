@@ -6,13 +6,13 @@ import retrofit2.http.Query;
 
 public interface API {
 
-  @GET("list")
+  @GET("/api/list")
   Call<ResponseModel> getLightStatus();
 
-  @GET("update/light1")
+  @GET("/api/update/light1")
   Call<ResponseModel> updateLight1Status(@Query("status") boolean status);
 
-  @GET("update/light2")
+  @GET("/api/update/light2")
   Call<ResponseModel> updateLight2Status(@Query("status") boolean status);
 
 }

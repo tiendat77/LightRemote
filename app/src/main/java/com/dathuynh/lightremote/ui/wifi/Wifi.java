@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dathuynh.lightremote.R;
+import com.dathuynh.lightremote.utils.Storage;
 import com.dathuynh.lightremote.utils.api.API;
 import com.dathuynh.lightremote.utils.api.APIService;
 import com.dathuynh.lightremote.utils.api.ResponseModel;
@@ -28,6 +29,7 @@ public class Wifi extends Fragment implements View.OnClickListener {
 
   // DECLARE VARIABLES
   private static String TAG = "Wifi Remote";
+  private String SERVER_API_URL = new String("");
   private WifiViewModel mViewModel;
   private FloatingActionButton lightButton1;
   private FloatingActionButton lightButton2;
@@ -58,6 +60,7 @@ public class Wifi extends Fragment implements View.OnClickListener {
     super.onActivityCreated(savedInstanceState);
     mViewModel = ViewModelProviders.of(this).get(WifiViewModel.class);
 
+    getServerIPAddress();
     getLightStatus();
   }
 
@@ -154,7 +157,7 @@ public class Wifi extends Fragment implements View.OnClickListener {
 
   // UTILS
   private void getLightStatus() {
-    API api = APIService.createAPIService();
+    API api = APIService.createAPIService(SERVER_API_URL);
     Call<ResponseModel> callback = api.getLightStatus();
 
     callback.enqueue(new Callback<ResponseModel>() {
@@ -180,7 +183,7 @@ public class Wifi extends Fragment implements View.OnClickListener {
   }
 
   private void setLightStatus(int light, boolean status) {
-    API api = APIService.createAPIService();
+    API api = APIService.createAPIService(SERVER_API_URL);
     Call<ResponseModel> callback;
 
     switch (light) {
@@ -214,6 +217,17 @@ public class Wifi extends Fragment implements View.OnClickListener {
         Log.d(TAG, t.getMessage());
       }
     });
+  }
+
+  private String getServerIPAddress() {
+    String address = new Storage(getContext()).getServerIp();
+
+    if (!address.equals("")) {
+      address = "http://" + address;
+    }
+
+    SERVER_API_URL = address;
+    return address;
   }
 
   private void pushNotify(String message) {

@@ -2,11 +2,9 @@ package com.dathuynh.lightremote;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.dathuynh.lightremote.utils.Storage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,9 +47,6 @@ public class RemoteActivity extends AppCompatActivity {
   }
 
   private void openSettings() {
-    String pref = new Storage(getBaseContext()).getServerIp();
-    Log.d("TEST_STORAGE", pref);
-
     Intent intent = new Intent(this, SettingsActivity.class);
     startActivity(intent);
   }

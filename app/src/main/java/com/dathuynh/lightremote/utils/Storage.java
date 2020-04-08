@@ -15,7 +15,12 @@ public class Storage {
   }
 
   public String getServerIp() {
-    String serverIp = preferences.getString("signature", "");
+    String serverIp = preferences.getString("server_ip", "");
     return serverIp;
+  }
+
+  public boolean getTheme() {
+    boolean darkTheme = preferences.getBoolean("theme", false);
+    return darkTheme;
   }
 }
