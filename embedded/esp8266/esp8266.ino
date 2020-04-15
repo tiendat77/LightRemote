@@ -1,12 +1,12 @@
 /*
   Author:
-  _____ ___ _____ _   _   ____    _  _____   _   _ _   ___   ___   _ _   _ 
-|_   _|_ _| ____| \ | | |  _ \  / \|_   _| | | | | | | \ \ / / \ | | | | |
+  _____ ___ _____ _   _   ____    _  _____   _   _ _   ___   ___   _ _   _
+  |_   _|_ _| ____| \ | | |  _ \  / \|_   _| | | | | | | \ \ / / \ | | | | |
   | |  | ||  _| |  \| | | | | |/ _ \ | |   | |_| | | | |\ V /|  \| | |_| |
   | |  | || |___| |\  | | |_| / ___ \| |   |  _  | |_| | | | | |\  |  _  |
   |_| |___|_____|_| \_| |____/_/   \_\_|   |_| |_|\___/  |_| |_| \_|_| |_|
-                                                                          
-  Date created 8-Apr-2020 
+
+  Date created 8-Apr-2020
 */
 
 #include <ESP8266WiFi.h>
@@ -14,8 +14,8 @@
 #include "ESP8266WebServer.h"
 
 #ifndef STASSID
-#define STASSID "Gryffindor"
-#define STAPSK  "your-password"
+#define STASSID "Slytherin"
+#define STAPSK  "9WF^F^ua"
 #endif
 
 const char* ssid     = STASSID;
@@ -30,7 +30,9 @@ const int LIGHT2 = 5;
 boolean light1 = false;
 boolean light2 = false;
 
-const String indexPage = "<html><head><title>ESP8266 Web Server</title></head><body><h1>ESP8266 Web Server Work!/</h1></body></html>";
+String indexPage = "";
+String headerPage = "";
+String footerPage = "";
 
 // Handler
 void handleRoot();
@@ -42,8 +44,6 @@ void handleNotFound();
 void setup(void) {
   pinMode(LIGHT1, OUTPUT);
   pinMode(LIGHT2, OUTPUT);
-  pinMode(LED, OUTPUT);
-  digitalWrite(LED, 0);
 
   Serial.begin(115200);
   WiFi.begin(ssid, password);
@@ -59,6 +59,8 @@ void setup(void) {
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+
+  genIndexPage();
 
   server.on("/", handleRoot);
 
@@ -80,51 +82,56 @@ void loop(void) {
 
 // WEB SERVER HANDLER
 void handleGetStatus() {
-  digitalWrite(LED, 1);
   String response = getLightStatus();
   server.send(200, "application/json", response);
-  digitalWrite(LED, 0);
 }
 
 void handleUpdateLight1() {
-  digitalWrite(LED, 1);
-
   String state = server.arg(0);
-
-  if (state.equals("true")) {
-    light1 = true;
-  } else {
-    light1 = false;
-  }
-
-  digitalWrite(LIGHT1, light1);
+  light1 = state.equals("true");
+  digitalWrite(LIGHT1, !light1);
 
   String response = getLightStatus();
   server.send(200, "application/json", response);
-  digitalWrite(LED, 0);
 }
 
 void handleUpdateLight2() {
-  digitalWrite(LED, 1);
-  String message = "Parameters:\n";
-
-  for (uint8_t i = 0; i < server.args(); i++) {
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
+  String state = server.arg(0);
+  light2 = state.equals("true");
+  digitalWrite(LIGHT2, !light2);
 
   String response = getLightStatus();
   server.send(200, "application/json", response);
-  digitalWrite(LED, 0);
 }
 
 void handleRoot() {
-  digitalWrite(LED, 1);
+  indexPage = headerPage;
+
+  if (light1) {
+    indexPage += "<input hidden name=\"status\" id=\"status1\" value=\"false\">";
+    indexPage += "<button type=\"submit\" class=\"action on\">Light 1</button>";
+  } else {
+    indexPage += "<input hidden name=\"status\" id=\"status1\" value=\"true\">";
+    indexPage += "<button type=\"submit\" class=\"action off\">Light 1</button>";
+  }
+
+  indexPage += "</form>";
+  indexPage += "<form action=\"/api/update/light2\" target=\"hiddenFrame\">";
+
+  if (light2) {
+    indexPage += "<input hidden name=\"status\" id=\"status2\" value=\"false\">";
+    indexPage += "<button type=\"submit\" class=\"action on mt-20\">Light 2</button>";
+  } else {
+    indexPage += "<input hidden name=\"status\" id=\"status2\" value=\"true\">";
+    indexPage += "<button type=\"submit\" class=\"action off mt-20\">Light 2</button>";
+  }
+
+  indexPage += footerPage;
+
   server.send(200, "text/html", indexPage);
-  digitalWrite(LED, 0);
 }
 
 void handleNotFound() {
-  digitalWrite(LED, 1);
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -139,11 +146,16 @@ void handleNotFound() {
   }
 
   server.send(404, "text/plain", message);
-  digitalWrite(LED, 0);
 }
 
 // UTILS
 String getLightStatus() {
   String response = "{ light1: " + String(light1) + ", light2: " + String(light2) + " }";
   return response;
+}
+
+void genIndexPage() {
+  headerPage += "<!DOCTYPE html><html lang=\"en\"><head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Light Remote</title> <style>.container{width: 100vw; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; position: relative;}.main{display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: auto;}.action{min-width: 200px; min-height: 50px; box-shadow: 2px 2px rgba(123, 124, 180, 0.6);}.on{background: #1ee870;}.off{background: #dedede;}.mt-20{margin-top: 20px;}.hide{position: absolute; top: -1; left: -1; width: 1px; height: 1px;}</style></head><body> <div class=\"container\"> <iframe name=\"hiddenFrame\" class=\"hide\"></iframe> <div class=\"main\"> <form action=\"/api/update/light1\" method=\"GET\" target=\"hiddenFrame\">";
+
+  footerPage += "</form></div></div></body></html>";
 }
