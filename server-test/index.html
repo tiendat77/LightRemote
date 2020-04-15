@@ -12,6 +12,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
 
     .main {
@@ -28,16 +29,39 @@
       box-shadow: 2px 2px rgba(123, 124, 180, 0.6);
     }
 
+    .on {
+      background: #1ee870;
+    }
+
+    .off {
+      background: #dedede;
+    }
+
     .mt-20 {
       margin-top: 20px;
+    }
+
+    .hide {
+      position: absolute;
+      top: -1;
+      left: -1;
+      width: 1px;
+      height: 1px;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <iframe name="hiddenFrame" class="hide"></iframe>
     <div class="main">
-      <button type="button" class="action">Light 1</button>
-      <button type="button" class="action mt-20">Light 2</button>
+      <form action="/api/update/light1" method="GET" target="hiddenFrame">
+        <input hidden name="status" id="status" value="false">
+        <button type="submit" class="action on">Light 1</button>
+      </form>
+      <form action="/api/update/light2" target="hiddenFrame">
+        <input hidden name="status" id="status" value="false">
+        <button type="submit" class="action mt-20">Light 2</button>
+      </form>
     </div>
   </div>
 </body>

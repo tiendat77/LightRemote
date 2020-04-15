@@ -186,12 +186,20 @@ public class Wifi extends Fragment implements View.OnClickListener {
     API api = APIService.createAPIService(SERVER_API_URL);
     Call<ResponseModel> callback;
 
+    String param = new String();
+
+    if (status) {
+      param = "true";
+    } else {
+      param = "false";
+    }
+
     switch (light) {
       case 1:
-        callback = api.updateLight1Status(status);
+        callback = api.updateLight1Status(param);
         break;
       case 2:
-        callback = api.updateLight2Status(status);
+        callback = api.updateLight2Status(param);
         break;
       default:
         callback = null;

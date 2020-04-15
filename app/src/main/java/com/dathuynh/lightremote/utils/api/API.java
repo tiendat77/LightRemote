@@ -10,9 +10,9 @@ public interface API {
   Call<ResponseModel> getLightStatus();
 
   @GET("/api/update/light1")
-  Call<ResponseModel> updateLight1Status(@Query("status") boolean status);
+  Call<ResponseModel> updateLight1Status(@Query("status") String status);
 
   @GET("/api/update/light2")
-  Call<ResponseModel> updateLight2Status(@Query("status") boolean status);
+  Call<ResponseModel> updateLight2Status(@Query("status") String status);
 
 }
