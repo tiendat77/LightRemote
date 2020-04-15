@@ -8,6 +8,8 @@ import java.net.Socket;
 
 public class SocketClient {
   private static String TAG = "Socket Client";
+  public static final String SERVER_IP = "192.168.4.1";
+  public static final int SERVER_PORT = 2345;
 
   private Socket socket;
   private String serverIp;
@@ -21,7 +23,7 @@ public class SocketClient {
 
   public SocketClient(OnReceiveMessage messageListener) {
     this.receiver = messageListener;
-    this.serverIp = Constants.SERVER_IP;
+    this.serverIp = SERVER_IP;
   }
 
   /**
@@ -62,7 +64,7 @@ public class SocketClient {
       InetAddress serverAddress = InetAddress.getByName(serverIp);
       Log.d(TAG, "Connecting to" + serverAddress.toString());
 
-      socket = new Socket(serverAddress, Constants.SERVER_PORT);
+      socket = new Socket(serverAddress, SERVER_PORT);
 
       try {
         Log.d(TAG, "Connected " + serverAddress.toString());

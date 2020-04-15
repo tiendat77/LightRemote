@@ -1,7 +1,7 @@
 package com.dathuynh.lightremote.utils.api;
 
 public class APIService {
-  public static String SERVER_API_BASE = "http://192.168.1.105:8000";
+  public static String SERVER_API_BASE = "http://192.168.1.105";
 
   public static API createAPIService(String serverAddress) {
     String SERVER_API_URL = SERVER_API_BASE;
