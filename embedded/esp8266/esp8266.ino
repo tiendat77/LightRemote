@@ -1,12 +1,20 @@
 /*
   Author:
   _____ ___ _____ _   _   ____    _  _____   _   _ _   ___   ___   _ _   _
-  |_   _|_ _| ____| \ | | |  _ \  / \|_   _| | | | | | | \ \ / / \ | | | | |
-  | |  | ||  _| |  \| | | | | |/ _ \ | |   | |_| | | | |\ V /|  \| | |_| |
-  | |  | || |___| |\  | | |_| / ___ \| |   |  _  | |_| | | | | |\  |  _  |
-  |_| |___|_____|_| \_| |____/_/   \_\_|   |_| |_|\___/  |_| |_| \_|_| |_|
+ |_   _|_ _| ____| \ | | |  _ \  / \|_   _| | | | | | | \ \ / / \ | | | | |
+   | |  | ||  _| |  \| | | | | |/ _ \ | |   | |_| | | | |\ V /|  \| | |_| |
+   | |  | || |___| |\  | | |_| / ___ \| |   |  _  | |_| | | | | |\  |  _  |
+   |_| |___|_____|_| \_| |____/_/   \_\_|   |_| |_|\___/  |_| |_| \_|_| |_|
 
   Date created 8-Apr-2020
+*/
+
+/*
+  Gryffindor
+  XnU3Xz^`
+
+  Slytherin
+  9WF^F^ua
 */
 
 #include <ESP8266WiFi.h>
@@ -14,8 +22,8 @@
 #include "ESP8266WebServer.h"
 
 #ifndef STASSID
-#define STASSID "Slytherin"
-#define STAPSK  "9WF^F^ua"
+#define STASSID "Gryffindor"
+#define STAPSK  "XnU3Xz^`"
 #endif
 
 const char* ssid     = STASSID;
@@ -24,8 +32,8 @@ const char* password = STAPSK;
 ESP8266WebServer server(80);
 
 const int LED = LED_BUILTIN;
-const int LIGHT1 = 4;
-const int LIGHT2 = 5;
+const int LIGHT1 = 12;
+const int LIGHT2 = 13;
 
 boolean light1 = false;
 boolean light2 = false;
@@ -45,7 +53,7 @@ void setup(void) {
   pinMode(LIGHT1, OUTPUT);
   pinMode(LIGHT2, OUTPUT);
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   WiFi.begin(ssid, password);
 
   // Wait for connection
