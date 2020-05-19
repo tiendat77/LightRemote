@@ -92,7 +92,7 @@ public class Wifi extends Fragment implements View.OnClickListener {
     connectButton = view.findViewById(R.id.wifi_button_connect);
 
     lightButton1.setImageResource(R.drawable.ic_led_off);
-    lightButton2.setImageResource(R.drawable.ic_light_bulb_off);
+    lightButton2.setImageResource(R.drawable.ic_fan_off);
     connectButton.setImageResource(R.drawable.ic_refresh);
   }
 
@@ -124,9 +124,9 @@ public class Wifi extends Fragment implements View.OnClickListener {
     setLightStatus(2, light2);
 
     if (light2) {
-      lightButton2.setImageResource(R.drawable.ic_light_bulb_on);
+      lightButton2.setImageResource(R.drawable.ic_fan_on);
     } else {
-      lightButton2.setImageResource(R.drawable.ic_light_bulb_off);
+      lightButton2.setImageResource(R.drawable.ic_fan_off);
     }
   }
 
@@ -144,9 +144,9 @@ public class Wifi extends Fragment implements View.OnClickListener {
       case 2:
         light2 = status;
         if (light2) {
-          lightButton2.setImageResource(R.drawable.ic_light_bulb_on);
+          lightButton2.setImageResource(R.drawable.ic_fan_on);
         } else {
-          lightButton2.setImageResource(R.drawable.ic_light_bulb_off);
+          lightButton2.setImageResource(R.drawable.ic_fan_off);
         }
         break;
 

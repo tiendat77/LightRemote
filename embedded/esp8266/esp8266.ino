@@ -22,8 +22,8 @@
 #include "ESP8266WebServer.h"
 
 #ifndef STASSID
-#define STASSID "Gryffindor"
-#define STAPSK  "XnU3Xz^`"
+#define STASSID "Slytherin"
+#define STAPSK  "9WF^F^ua"
 #endif
 
 const char* ssid     = STASSID;
@@ -39,8 +39,6 @@ boolean light1 = false;
 boolean light2 = false;
 
 String indexPage = "";
-String headerPage = "";
-String footerPage = "";
 
 // Handler
 void handleRoot();
@@ -52,6 +50,9 @@ void handleNotFound();
 void setup(void) {
   pinMode(LIGHT1, OUTPUT);
   pinMode(LIGHT2, OUTPUT);
+
+  digitalWrite(LIGHT1, !light1);
+  digitalWrite(LIGHT2, !light2);
 
   Serial.begin(9600);
   WiFi.begin(ssid, password);
@@ -113,29 +114,6 @@ void handleUpdateLight2() {
 }
 
 void handleRoot() {
-  indexPage = headerPage;
-
-  if (light1) {
-    indexPage += "<input hidden name=\"status\" id=\"status1\" value=\"false\">";
-    indexPage += "<button type=\"submit\" class=\"action on\">Light 1</button>";
-  } else {
-    indexPage += "<input hidden name=\"status\" id=\"status1\" value=\"true\">";
-    indexPage += "<button type=\"submit\" class=\"action off\">Light 1</button>";
-  }
-
-  indexPage += "</form>";
-  indexPage += "<form action=\"/api/update/light2\" target=\"hiddenFrame\">";
-
-  if (light2) {
-    indexPage += "<input hidden name=\"status\" id=\"status2\" value=\"false\">";
-    indexPage += "<button type=\"submit\" class=\"action on mt-20\">Light 2</button>";
-  } else {
-    indexPage += "<input hidden name=\"status\" id=\"status2\" value=\"true\">";
-    indexPage += "<button type=\"submit\" class=\"action off mt-20\">Light 2</button>";
-  }
-
-  indexPage += footerPage;
-
   server.send(200, "text/html", indexPage);
 }
 
@@ -158,12 +136,10 @@ void handleNotFound() {
 
 // UTILS
 String getLightStatus() {
-  String response = "{ light1: " + String(light1) + ", light2: " + String(light2) + " }";
+  String response = "{ \"light1\": " + String(light1) + ", \"light2\": " + String(light2) + " }";
   return response;
 }
 
 void genIndexPage() {
-  headerPage += "<!DOCTYPE html><html lang=\"en\"><head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Light Remote</title> <style>.container{width: 100vw; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; position: relative;}.main{display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: auto;}.action{min-width: 200px; min-height: 50px; box-shadow: 2px 2px rgba(123, 124, 180, 0.6);}.on{background: #1ee870;}.off{background: #dedede;}.mt-20{margin-top: 20px;}.hide{position: absolute; top: -1; left: -1; width: 1px; height: 1px;}</style></head><body> <div class=\"container\"> <iframe name=\"hiddenFrame\" class=\"hide\"></iframe> <div class=\"main\"> <form action=\"/api/update/light1\" method=\"GET\" target=\"hiddenFrame\">";
-
-  footerPage += "</form></div></div></body></html>";
+  indexPage = "<!DOCTYPE html><html lang=\"en\"><head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Light Remote</title> <style>.container{width: 100vw; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; position: relative;}.main{display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: auto; padding: 24px;}.title{font-size: 2em; font-style: italic; font-weight: 800; color: #6c868ec2;}.action{min-width: 200px; min-height: 50px; color: #6b6b6be8; font-size: 1.2em; font-style: italic; font-weight: 600; border: none; border-radius: 4px; box-shadow: 3px 5px 4px 0px rgba(199, 198, 136, 0.52);}.on{background: #fcff7bad;}.off{background: #c4cec4bf;}.mt-20{margin-top: 20px;}</style> <script src=\"https://code.jquery.com/jquery-1.11.3.js\"></script></head><body> <div class=\"container\"> <div class=\"main\"> <div style=\"margin-bottom: 30px;\"> <span class=\"title\">Light Remote</span> </div><div> <input hidden name=\"status\" id=\"status1\" value=\"false\"> <button type=\"submit\" id='light1' class=\"action\">Light 1</button> </div><div> <input hidden name=\"status\" id=\"status2\" value=\"false\"> <button type=\"submit\" id='light2' class=\"action mt-20\">Light 2</button> </div></div></div><script>$(document).ready(function (){$.ajax({url: '/api/list', type: 'get', dataType: 'json', error: function (a, b){console.error(b);}, success: function (res){setStatus(res);}}); $('#light2').click(function (e){e.preventDefault(); var value=$('#status2').val(); $.ajax({url: '/api/update/light2', data:{status: value}, type: 'get', dataType: 'json', error: function (a, b){console.error(b);}, success: function (res){setStatus(res);}});}); $('#light1').click(function (e){e.preventDefault(); var value=$('#status1').val(); $.ajax({url: '/api/update/light1', data:{status: value}, type: 'get', dataType: 'json', error: function (a, b){console.error(b);}, success: function (res){setStatus(res);}});});}); function setStatus(res){if (res.light1){$('#status1').val(\"false\"); $('#light1').addClass('on'); $('#light1').removeClass('off');}if (!res.light1){$('#status1').val(\"true\"); $('#light1').addClass('off'); $('#light1').removeClass('on');}if (res.light2){$('#status2').val(\"false\"); $('#light2').addClass('on'); $('#light2').removeClass('off');}if (!res.light2){$('#status2').val(\"true\"); $('#light2').addClass('off'); $('#light2').removeClass('on');}}</script></body></html>";
 }

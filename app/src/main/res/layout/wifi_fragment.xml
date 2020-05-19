@@ -37,7 +37,7 @@
         android:layout_width="@dimen/circle_button"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Light 1"
+        android:text="Device 1"
         android:textAlignment="center" />
 
     </LinearLayout>
@@ -66,7 +66,7 @@
         android:layout_width="@dimen/circle_button"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Light 2"
+        android:text="Device 2"
         android:textAlignment="center" />
     </LinearLayout>
 

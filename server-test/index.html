@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,48 +22,140 @@
       justify-content: center;
       align-items: center;
       overflow: auto;
+      padding: 24px;
+    }
+
+    .title {
+      font-size: 2em;
+      font-style: italic;
+      font-weight: 800;
+      color: #6c868ec2;
     }
 
     .action {
       min-width: 200px;
       min-height: 50px;
-      box-shadow: 2px 2px rgba(123, 124, 180, 0.6);
+      color: #6b6b6be8;
+      font-size: 1.2em;
+      font-style: italic;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      box-shadow: 3px 5px 4px 0px rgba(199, 198, 136, 0.52);
     }
 
     .on {
-      background: #1ee870;
+      background: #fcff7bad;
     }
 
     .off {
-      background: #dedede;
+      background: #c4cec4bf;
     }
 
     .mt-20 {
       margin-top: 20px;
     }
-
-    .hide {
-      position: absolute;
-      top: -1;
-      left: -1;
-      width: 1px;
-      height: 1px;
-    }
   </style>
+  <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
+
 <body>
   <div class="container">
-    <iframe name="hiddenFrame" class="hide"></iframe>
     <div class="main">
-      <form action="/api/update/light1" method="GET" target="hiddenFrame">
-        <input hidden name="status" id="status" value="false">
-        <button type="submit" class="action on">Light 1</button>
-      </form>
-      <form action="/api/update/light2" target="hiddenFrame">
-        <input hidden name="status" id="status" value="false">
-        <button type="submit" class="action mt-20">Light 2</button>
-      </form>
+      <div style="margin-bottom: 30px;">
+        <span class="title">Light Remote</span>
+      </div>
+
+      <div>
+        <input hidden name="status" id="status1" value="false">
+        <button type="submit" id='light1' class="action">Light 1</button>
+      </div>
+
+      <div>
+        <input hidden name="status" id="status2" value="false">
+        <button type="submit" id='light2' class="action mt-20">Light 2</button>
+      </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url: '/api/list',
+        type: 'get',
+        dataType: 'json',
+        error: function (a, b) {
+          console.error(b);
+        },
+        success: function (res) {
+          setStatus(res);
+        }
+      });
+
+      $('#light2').click(function (e) {
+        e.preventDefault();
+        var value = $('#status2').val();
+        $.ajax({
+          url: '/api/update/light2',
+          data: {
+            status: value
+          },
+          type: 'get',
+          dataType: 'json',
+          error: function (a, b) {
+            console.error(b);
+          },
+          success: function (res) {
+            setStatus(res);
+          }
+        });
+      });
+
+      $('#light1').click(function (e) {
+        e.preventDefault();
+        var value = $('#status1').val();
+        $.ajax({
+          url: '/api/update/light1',
+          data: {
+            status: value
+          },
+          type: 'get',
+          dataType: 'json',
+          error: function (a, b) {
+            console.error(b);
+          },
+          success: function (res) {
+            setStatus(res);
+          }
+        });
+      });
+    });
+
+    function setStatus(res) {
+      if (res.light1) {
+        $('#status1').val("false");
+        $('#light1').addClass('on');
+        $('#light1').removeClass('off');
+      }
+
+      if (!res.light1) {
+        $('#status1').val("true");
+        $('#light1').addClass('off');
+        $('#light1').removeClass('on');
+      }
+
+      if (res.light2) {
+        $('#status2').val("false");
+        $('#light2').addClass('on');
+        $('#light2').removeClass('off');
+      }
+
+      if (!res.light2) {
+        $('#status2').val("true");
+        $('#light2').addClass('off');
+        $('#light2').removeClass('on');
+      }
+    }
+  </script>
 </body>
+
 </html>

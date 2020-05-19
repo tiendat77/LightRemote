@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/list', (req, res) => {
   console.log('get');
-  res.json({ light1, light2 });
+  res.send({ "light1": light1 == "true" ? 1 : 0, "light2": light2 == "true" ? 1 : 0 });
 });
 
 app.get('/api/update/light1', (req, res) => {
@@ -31,7 +31,7 @@ app.get('/api/update/light1', (req, res) => {
   if (status !== undefined) {
     light1 = status;
   }
-  res.json({ light1, light2 });
+  res.send({ "light1": light1 == "true" ? 1 : 0, "light2": light2 == "true" ? 1 : 0 });
 });
 
 app.get('/api/update/light2', (req, res) => {
@@ -40,7 +40,7 @@ app.get('/api/update/light2', (req, res) => {
   if (status !== undefined) {
     light2 = status;
   }
-  res.json({ light1, light2 });
+  res.send({ "light1": light1 == "true" ? 1 : 0, "light2": light2 == "true" ? 1 : 0 });
 });
 
 ///////////////////////////////////////////////////
