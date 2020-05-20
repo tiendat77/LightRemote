@@ -29,6 +29,12 @@
 const char* ssid     = STASSID;
 const char* password = STAPSK;
 
+//Static IP address configuration
+IPAddress staticIP(192, 168, 1, 100);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(8, 8, 8, 8);  //DNS
+
 ESP8266WebServer server(80);
 
 const int LED = LED_BUILTIN;
@@ -55,6 +61,10 @@ void setup(void) {
   digitalWrite(LIGHT2, !light2);
 
   Serial.begin(9600);
+  WiFi.disconnect();
+
+  WiFi.hostname("ESP-LightRemote");
+  WiFi.config(staticIP, subnet, gateway, dns);
   WiFi.begin(ssid, password);
 
   // Wait for connection
