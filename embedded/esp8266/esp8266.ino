@@ -17,14 +17,20 @@
   9WF^F^ua
 */
 
-#include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include "ESP8266WebServer.h"
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <WiFiClientSecure.h>
+#include <ArduinoJson.h>
+#include <UniversalTelegramBot.h>
 
 #ifndef STASSID
 #define STASSID "Slytherin"
 #define STAPSK  "9WF^F^ua"
 #endif
+
+#define BotToken "1477734623:AAFLvUI9x0-pk1H14cVZjDFrzhIWke6XevI" // Telegram Bot Token (Get from BotFather): "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#define ChatID "1433535358" // Telegram chat id (get from idchat bot): "XXXXXXXXXX"
 
 const char* ssid     = STASSID;
 const char* password = STAPSK;
@@ -37,6 +43,9 @@ IPAddress dns(8, 8, 8, 8);  //DNS
 
 ESP8266WebServer server(80);
 
+WiFiClientSecure client;
+UniversalTelegramBot bot(BotToken, client);
+
 const int LED = LED_BUILTIN;
 const int LIGHT1 = 12;
 const int LIGHT2 = 13;
@@ -46,12 +55,16 @@ boolean light2 = false;
 
 String indexPage = "";
 
+unsigned long lastTimeBotCheck = 0;
+
 // Handler
 void handleRoot();
 void handleGetStatus();
 void handleUpdateLight1();
 void handleUpdateLight2();
 void handleNotFound();
+void handleTelegramBot();
+void handleTelegramMessage(int len);
 
 void setup(void) {
   pinMode(LIGHT1, OUTPUT);
@@ -60,9 +73,12 @@ void setup(void) {
   digitalWrite(LIGHT1, !light1);
   digitalWrite(LIGHT2, !light2);
 
-  Serial.begin(9600);
+  client.setInsecure();
+
+  Serial.begin(115200);
   WiFi.disconnect();
 
+  WiFi.mode(WIFI_STA);
   WiFi.hostname("ESP-LightRemote");
   WiFi.config(staticIP, subnet, gateway, dns);
   WiFi.begin(ssid, password);
@@ -92,11 +108,13 @@ void setup(void) {
   server.onNotFound(handleNotFound);
 
   server.begin();
+
   Serial.println("Server started");
 }
 
 void loop(void) {
-  server.handleClient();
+//  server.handleClient();
+  handleTelegramBot();
 }
 
 // WEB SERVER HANDLER
@@ -142,6 +160,73 @@ void handleNotFound() {
   }
 
   server.send(404, "text/plain", message);
+}
+
+void handleTelegramBot() {
+  // check for new message every 1 second
+  if (millis() > lastTimeBotCheck + 100)  {
+    Serial.println("check");
+    lastTimeBotCheck = millis();
+    int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+    handleTelegramMessage(1);
+
+//    while(numNewMessages) {
+//      Serial.println("handleNewMessages");      
+//      numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+//    }
+  }
+}
+
+// Handle Telegram Bot when message receive
+void handleTelegramMessage(int len) {
+  Serial.println("handleNewMessages");
+  Serial.println(String(len));
+
+  for (int i = 0; i < len; i++) {
+    String chat_id = String(bot.messages[i].chat_id);
+
+    if (chat_id != ChatID){
+      bot.sendMessage(chat_id, "Unauthorized user", "");
+      continue;
+    }
+
+    String from_name = bot.messages[i].from_name;
+    String text = bot.messages[i].text;
+
+    if (text == "/start") {
+      String welcome = "Welcome, " + from_name + ".\n";
+      welcome += "Use the following commands to control your outputs.\n\n";
+      welcome += "/light1 to turn on/turn off light 1 \n";
+      welcome += "/light2 to turn on/turn off light 2 \n";
+      welcome += "/state to request current lights state \n";
+      bot.sendMessage(chat_id, welcome, "");
+      return;
+    }
+
+    if (text == "/light1") {
+      light1 = !light1;
+      String message = "Light 1 state set to " + light1 ? "ON" : "OFF";
+      bot.sendMessage(chat_id, message, "");
+      digitalWrite(LIGHT1, !light1);
+      return;
+    }
+    
+    if (text == "/light2") {
+      light2 = !light2;
+      String message = "Light 2 state set to " + light2 ? "ON" : "OFF";
+      bot.sendMessage(chat_id, message, "");
+      digitalWrite(LIGHT2, !light2);
+      return;
+    }
+    
+    if (text == "/state") {
+      String message = "Light status:";
+      message += "\nLight 1 is " + light1 ? "ON" : "OFF";
+      message += "\nLight 2 is " + light2 ? "ON" : "OFF";
+      bot.sendMessage(chat_id, message, "");
+      return;
+    }
+  }
 }
 
 // UTILS
