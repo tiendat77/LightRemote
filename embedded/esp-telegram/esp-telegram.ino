@@ -1,7 +1,7 @@
 /*
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/telegram-control-esp32-esp8266-nodemcu-outputs/
-  
+
   Project created using Brian Lough's Universal Telegram Bot Library: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
   Example based on the Universal Arduino Telegram Bot Library: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot/blob/master/examples/ESP8266/FlashLED/FlashLED.ino
 */
@@ -25,14 +25,12 @@ const char* ssid = STASSID;
 const char* password = STAPSK;
 
 // Initialize Telegram BOT
-// #define BOTtoken "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-#define BOTtoken "1477734623:AAFLvUI9x0-pk1H14cVZjDFrzhIWke6XevI"  // your Bot Token (Get from Botfather)
+#define BOTtoken "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" // your Bot Token (Get from Botfather)
 
 // Use @myidbot to find out the chat ID of an individual or a group
 // Also note that you need to click "start" on a bot before it can
 // message you
-// #define CHAT_ID "XXXXXXXXXX"
-#define CHAT_ID "1433535358"
+#define CHAT_ID "XXXXXXXXXX"
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
@@ -56,7 +54,7 @@ void handleNewMessages(int numNewMessages) {
       bot.sendMessage(chat_id, "Unauthorized user: " + chat_id, "");
       // continue;
     }
-    
+
     // Print the received message
     String text = bot.messages[i].text;
     Serial.println(text);
@@ -77,13 +75,13 @@ void handleNewMessages(int numNewMessages) {
       ledState = HIGH;
       digitalWrite(ledPin, ledState);
     }
-    
+
     if (text == "/led_off") {
       bot.sendMessage(chat_id, "LED state set to OFF", "");
       ledState = LOW;
       digitalWrite(ledPin, ledState);
     }
-    
+
     if (text == "/state") {
       if (digitalRead(ledPin)){
         bot.sendMessage(chat_id, "LED is ON", "");
@@ -104,7 +102,7 @@ void setup() {
 
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, ledState);
-  
+
   // Connect to Wi-Fi
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
