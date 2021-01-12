@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name RC_Car)(type Legacy)(uri /home/tiendat/Code/control/kicad-pcb/RC_Car.lib)(options "")(descr ""))
+  (lib (name Light_Remote_Library)(type Legacy)(uri ${KIPRJMOD}/Light_Remote_Library.lib)(options "")(descr ""))
+  (lib (name light-remote-rescue)(type Legacy)(uri ${KIPRJMOD}/light-remote-rescue.lib)(options "")(descr ""))
+)
