@@ -29,8 +29,8 @@
 #define STAPSK  "9WF^F^ua"
 #endif
 
-#define BotToken "1477734623:AAFLvUI9x0-pk1H14cVZjDFrzhIWke6XevI" // Telegram Bot Token (Get from BotFather): "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-#define ChatID "1433535358" // Telegram chat id (get from idchat bot): "XXXXXXXXXX"
+#define BotToken "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" // Telegram Bot Token (Get from BotFather)
+#define ChatID "XXXXXXXXXX" // Telegram chat id (get from idchat bot)
 
 const char* ssid     = STASSID;
 const char* password = STAPSK;
@@ -171,7 +171,7 @@ void handleTelegramBot() {
     handleTelegramMessage(1);
 
 //    while(numNewMessages) {
-//      Serial.println("handleNewMessages");      
+//      Serial.println("handleNewMessages");
 //      numNewMessages = bot.getUpdates(bot.last_message_received + 1);
 //    }
   }
@@ -210,7 +210,7 @@ void handleTelegramMessage(int len) {
       digitalWrite(LIGHT1, !light1);
       return;
     }
-    
+
     if (text == "/light2") {
       light2 = !light2;
       String message = "Light 2 state set to " + light2 ? "ON" : "OFF";
@@ -218,7 +218,7 @@ void handleTelegramMessage(int len) {
       digitalWrite(LIGHT2, !light2);
       return;
     }
-    
+
     if (text == "/state") {
       String message = "Light status:";
       message += "\nLight 1 is " + light1 ? "ON" : "OFF";
