@@ -1,39 +1,24 @@
-/*
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/telegram-control-esp32-esp8266-nodemcu-outputs/
-
-  Project created using Brian Lough's Universal Telegram Bot Library: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
-  Example based on the Universal Arduino Telegram Bot Library: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot/blob/master/examples/ESP8266/FlashLED/FlashLED.ino
-*/
-
-#ifdef ESP32
-  #include <WiFi.h>
-#else
-  #include <ESP8266WiFi.h>
-#endif
-#include <WiFiClientSecure.h>
-#include <UniversalTelegramBot.h>   // Universal Telegram Bot Library written by Brian Lough: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
 #include <ArduinoJson.h>
+#include <ESP8266WiFi.h>
+#include <WiFiClientSecure.h>
+#include <UniversalTelegramBot.h>
 
 #ifndef STASSID
+// #define STASSID "Gryffindor"
+// #define STAPSK  "XnU3Xz^`"
 #define STASSID "Slytherin"
 #define STAPSK  "9WF^F^ua"
 #endif
 
-// Replace with your network credentials
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
-// Initialize Telegram BOT
-#define BOTtoken "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" // your Bot Token (Get from Botfather)
-
-// Use @myidbot to find out the chat ID of an individual or a group
-// Also note that you need to click "start" on a bot before it can
-// message you
+// Bot Token (Get from Botfather)
+#define BOT_TOKEN "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 #define CHAT_ID "XXXXXXXXXX"
 
 WiFiClientSecure client;
-UniversalTelegramBot bot(BOTtoken, client);
+UniversalTelegramBot bot(BOT_TOKEN, client);
 
 // Checks for new messages every 1 second.
 int botRequestDelay = 1000;
@@ -125,5 +110,72 @@ void loop() {
       numNewMessages = bot.getUpdates(bot.last_message_received + 1);
     }
     lastTimeBotRan = millis();
+  }
+}
+
+void handleTelegramBot() {
+  // check for new message every 1 second
+  if (millis() > lastTimeBotCheck + 100)  {
+    Serial.println("check");
+    lastTimeBotCheck = millis();
+    int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+    handleTelegramMessage(1);
+
+//    while(numNewMessages) {
+//      Serial.println("handleNewMessages");
+//      numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+//    }
+  }
+}
+
+// Handle Telegram Bot when message receive
+void handleTelegramMessage(int len) {
+  Serial.println("handleNewMessages");
+  Serial.println(String(len));
+
+  for (int i = 0; i < len; i++) {
+    String chat_id = String(bot.messages[i].chat_id);
+
+    if (chat_id != ChatID){
+      bot.sendMessage(chat_id, "Unauthorized user", "");
+      continue;
+    }
+
+    String from_name = bot.messages[i].from_name;
+    String text = bot.messages[i].text;
+
+    if (text == "/start") {
+      String welcome = "Welcome, " + from_name + ".\n";
+      welcome += "Use the following commands to control your outputs.\n\n";
+      welcome += "/light1 to turn on/turn off light 1 \n";
+      welcome += "/light2 to turn on/turn off light 2 \n";
+      welcome += "/state to request current lights state \n";
+      bot.sendMessage(chat_id, welcome, "");
+      return;
+    }
+
+    if (text == "/light1") {
+      light1 = !light1;
+      String message = "Light 1 state set to " + light1 ? "ON" : "OFF";
+      bot.sendMessage(chat_id, message, "");
+      digitalWrite(LIGHT1, !light1);
+      return;
+    }
+
+    if (text == "/light2") {
+      light2 = !light2;
+      String message = "Light 2 state set to " + light2 ? "ON" : "OFF";
+      bot.sendMessage(chat_id, message, "");
+      digitalWrite(LIGHT2, !light2);
+      return;
+    }
+
+    if (text == "/state") {
+      String message = "Light status:";
+      message += "\nLight 1 is " + light1 ? "ON" : "OFF";
+      message += "\nLight 2 is " + light2 ? "ON" : "OFF";
+      bot.sendMessage(chat_id, message, "");
+      return;
+    }
   }
 }
